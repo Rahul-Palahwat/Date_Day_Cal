@@ -1,0 +1,96 @@
+
+
+<script>
+
+  var D = {
+    "2020-01-01": 6,
+    "2020-01-04": 12,
+    "2020-01-05": 14,
+    "2020-01-06": 2,
+    "2020-01-07": 4,
+  };
+  console.log(typeof D);
+  function solution(D) {
+    // this array is for inserting key in the output dictionary
+    var days = new Array(7);
+    days[0] = "Mon";
+    days[1] = "Tue";
+    days[2] = "Wed";
+    days[3] = "Thu";
+    days[4] = "Fri";
+    days[5] = "Sat";
+    days[6] = "Sun";
+
+    // this array is to find all the remaining days for which we are to find arithmetic mean
+    var found = new Array(7);
+    found[1] = "False";
+    found[2] = "False";
+    found[3] = "False";
+    found[4] = "False";
+    found[5] = "False";
+    found[6] = "False";
+    found[0] = "False";
+
+    var d = new Array(7);
+    // this array to store the corresponding value
+    d[0] = 0;
+    d[1] = 0;
+    d[2] = 0;
+    d[3] = 0;
+    d[4] = 0;
+    d[5] = 0;
+    d[6] = 0;
+    //var sun=0,mon=0,tue=0,wed=0,fri=0,sat=0,thr=0;
+    for (var key in D) {
+      var value = D[key];
+      var da = new Date(key);
+      var indexday = da.getDay() - 1;
+      if (indexday == -1) {
+        indexday = 6;
+      }
+      found[indexday] = "True";
+      d[indexday] = d[indexday] + value;
+    }
+    // console.log("Hello")
+    var ans = d;
+    // this loop to update all the days that are empty and put arithmetic mean in them
+    for (var x = 0; x < 7; x++) {
+      var count = 0;
+      for (var y = x + 1; y < 7; y++) {
+        if (found[y] == "False") {
+          count++;
+        } else {
+          if (count == 0) {
+            x = y;
+          } else {
+            var first = ans[x],
+              second = ans[y];
+            var dif = (second - first) / (count + 1);
+            for (var z = x + 1; z < y; z++) {
+              ans[z] = ans[z - 1] + dif;
+            }
+            x = y;
+          }
+        }
+      }
+    }
+    //const cars = ["Saab","Volvo","BMW"];
+    var dict = [];
+    for (var i = 0; i < 7; i++) {
+      dict.push({
+        key: days[i],
+        value: ans[i],
+      });
+      // console.log(days[i]);
+      // console.log(ans[i]);
+      // console.log(found[i]);
+    }
+    // console.log(dict);
+
+    return dict;
+  }
+  var ans = solution(D);
+  console.log(ans);
+
+  // document.getElementById("demo").innerHTML = ans[6];
+</script>
